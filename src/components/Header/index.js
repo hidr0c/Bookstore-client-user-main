@@ -12,27 +12,27 @@ const Menus = [
   {
     to: '/',
     exact: true,
-    name: 'HOME'
+    name: 'TRANG CHỦ'
   },
   {
-    to: '/Bookstore',
+    to: '/SANPHAM',
     exact: true,
-    name: 'BOOK STORE'
+    name: 'SẢN PHẨM'
   },
   {
-    to: '/Blog',
+    to: '/BAIVIET',
     exact: true,
-    name: 'BLOG'
+    name: 'BÀI VIẾT'
   },
   {
     to: '/My-account',
     exact: true,
-    name: 'MY ACCOUNT'
+    name: 'TÀI KHOẢN'
   },
   {
-    to: '/Contact',
+    to: '/LIENHE',
     exact: true,
-    name: 'CONTACT'
+    name: 'LIÊN HỆ'
   }
 ]
 export const Header = () => {

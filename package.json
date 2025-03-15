@@ -6,9 +6,8 @@
     "@testing-library/jest-dom": "^5.13.0",
     "@testing-library/react": "^11.2.7",
     "@testing-library/user-event": "^12.8.3",
-    "ajv": "^8.12.0",
-    "axios": "^1.7.9",
-    "bootstrap": "^5.3.3",
+    "axios": "^0.21.1",
+    "bootstrap": "^4.6.0",
     "emailjs-com": "^3.2.0",
     "mongodb": "^6.6.2",
     "react": "^17.0.2",
@@ -23,7 +22,7 @@
     "react-redux": "^7.2.4",
     "react-responsive-carousel": "^3.2.18",
     "react-router-dom": "^5.2.0",
-    "react-scripts": "^5.0.1",
+    "react-scripts": "4.0.3",
     "react-slideshow-image": "^3.4.7",
     "react-star-ratings": "^2.3.0",
     "react-toastify": "^7.0.4",
@@ -58,13 +57,6 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  },
-  "overrides": {
-    "react-scripts": {
-      "@svgr/webpack": "8.1.0",
-      "typescript": "4.9.5",
-      "postcss": "8.4.38"
-    }
   },
   "proxy": "https://vapi.vnappmob.com"
 }

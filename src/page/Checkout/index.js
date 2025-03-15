@@ -13,11 +13,11 @@ import { toast } from "react-toastify";
 import { toastConfig } from "../../constants/configToast";
 import { updateAllCartRequest, resetCart } from "../../actions/actionProducts";
 import { useLocation } from "react-router-dom";
+
 export const Checkout = () => {
   const location = useLocation(); // Lấy đối tượng location từ react-router-dom
   const getValueQuery = (name) => {
     const query = new URLSearchParams(location.search);
-
     const queryValue = query.get(name);
     return queryValue;
   };
@@ -50,7 +50,7 @@ export const Checkout = () => {
 
   const history = useHistory();
   const dispatch = useDispatch();
-  const { register, handleSubmit } = useForm();
+  const { register, handleSubmit, formState: { errors } } = useForm();
   const user = useSelector((state) => state.user);
   const [listCity, setListCity] = useState([]);
   const [listDistrict, setListDistrict] = useState([]);
@@ -62,6 +62,7 @@ export const Checkout = () => {
   const [code, setCode] = useState("");
   const [isCode, setIsCode] = useState(false);
   const [loadingCode, setLoadingCode] = useState(false);
+  const [paymentMethod, setPaymentMethod] = useState("cod"); // Trạng thái lưu trữ phương thức thanh toán
 
   const [address, setAddress] = useState({
     city: "",
@@ -186,12 +187,11 @@ export const Checkout = () => {
         quantity: cart.quantity,
       });
     });
-    const pay = document.querySelector("input.pay:checked").value;
-    data.pay = pay;
-    if (pay === "cod") {
+    data.pay = paymentMethod; // Sử dụng trạng thái paymentMethod
+    if (paymentMethod === "cod") {
       sendRequestOrder(data);
     }
-    if (pay === "vnpay") {
+    if (paymentMethod === "vnpay") {
       bankAccountVnpay(data);
     }
   };
@@ -239,26 +239,56 @@ export const Checkout = () => {
                 <div className="billing-form_group">
                   <label>Họ tên*</label>
                   <input
-                    {...register("name", { required: true })}
+                    {...register("name", {
+                      required: "Trường này là bắt buộc",
+                      pattern: {
+                        value: /^[A-Za-zÀ-ỹ][A-Za-zÀ-ỹ\s]*$/,
+                        message: "Họ tên phải bắt đầu bằng chữ cái,không chứa ký tự đặc biệt hoặc số"
+                      },
+                      maxLength: {
+                        value: 30,
+                        message: "Họ tên không được vượt quá 30 ký tự"
+                      }
+                    })}
                     type="text"
                     placeholder="Nhập họ tên của bạn"
                   />
+                  {errors.name && <p className="error-message">{errors.name.message}</p>}
                 </div>
                 <div className="billing-form_group">
                   <label>Số điện thoại*</label>
                   <input
-                    {...register("phone", { required: true })}
+                    {...register("phone", {
+                      required: "Trường này là bắt buộc",
+                      pattern: {
+                        value: /^[0-9]+$/,
+                        message: "Số điện thoại chỉ chứa số"
+                      },
+                      minLength: {
+                        value: 10,
+                        message: "Số điện thoại phải có ít nhất 10 số"
+                      },
+                      maxLength: {
+                        value: 10,
+                        message: "Số điện thoại không được vượt quá 10 số"
+                      }
+                    })}
                     type="text"
                   />
+                  {errors.phone && <p className="error-message">{errors.phone.message}</p>}
                 </div>
                 <div className="billing-form_group">
                   <label>Tỉnh/Thành phố*</label>
                   <select onChange={handleOnChangeCity}>
-                                        <option value="0">Chọn tỉnh/thành phố</option>
-                                        {listCity.map((city) => {
-                                            return <option key={city.province_id} value={city.province_id}>{city.province_name}</option>
-                                        })}
-                                    </select>
+                    <option value="0">Chọn tỉnh/thành phố</option>
+                    {listCity.map((city) => {
+                      return (
+                        <option key={city.province_id} value={city.province_id}>
+                          {city.province_name}
+                        </option>
+                      );
+                    })}
+                  </select>
                 </div>
                 <div className="billing-form_group">
                   <label>Quận/huyện*</label>
@@ -388,26 +418,20 @@ export const Checkout = () => {
                     className="pay"
                     value="cod"
                     type="radio"
-                    checked
+                    checked={paymentMethod === "cod"}
+                    onChange={() => setPaymentMethod("cod")}
                   />
                   <span>Thanh toán khi nhận hàng</span>
                 </div>
-                <div className="order-paymen_box">
-                  <input
-                    disabled
-                    name="pay"
-                    className="pay"
-                    value="momo"
-                    type="radio"
-                  />
-                  <span>Thanh toán qua momo</span>
-                </div>
+                
                 <div className="order-paymen_box">
                   <input
                     name="pay"
                     className="pay"
                     value="vnpay"
                     type="radio"
+                    checked={paymentMethod === "vnpay"}
+                    onChange={() => setPaymentMethod("vnpay")}
                   />
                   <span>Thanh toán qua vnpay</span>
                 </div>

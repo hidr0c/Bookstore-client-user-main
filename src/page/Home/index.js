@@ -19,12 +19,12 @@ export const Home = () => {
       <Header />
       <CarouselP />
       <SearchBar />
-      <Category products={products.productsPopular} label='Popular Books' />
+      <Category products={products.productsPopular} label='Sách Phổ Biến' />
       <Featured product={products.listProduct[1]} />
       <Sale products={products.productsNews} />
       <Maxim />
       <Introduce />
-      <Category products={products.productsSale} label='Sale Books' />
+      <Category products={products.productsSale} label='Sách Giảm Giá' />
       <Blog posts={posts} />
       <Footer />
     </div>

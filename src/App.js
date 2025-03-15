@@ -28,7 +28,7 @@ function App() {
     useEffect(() => {
         fetchAPIRequest(dispatch);
         getCurrentUser(dispatch);
-    }, [dispatch])
+    }, [])
     return (
         <Router>
             <div className="site-wrap">
